@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tienePropina = true;
     }
 	
-	if ($pos === false) {
+	/* if ($pos === false) {
 		if ($numeroMesa >= 25 && $numeroMesa <= 45) {
 			printInvoice($frm, 'SEGUNDO-PISO-PRINTER', $tienePropina);
 		} else {
@@ -53,8 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	} else {
 		printInvoice($frm, 'KIOSCO-PRINTER', $tienePropina);
-	}
+	} */
 
+    printInvoice($frm, 'POS-80', $tienePropina);
 	
 }
 

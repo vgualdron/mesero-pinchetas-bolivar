@@ -11,14 +11,13 @@ class ApiAlegra extends PDO {
 	
 	public function __construct() {
 		$this->categories  =  array(
-			"BEBIDAS" => 1,
-			"PINCHETAS" => 2,
-			"ADICIONALES" => 3,
-			"CORTES DE CARNE" => 4,
-			"ENTRADAS" => 5,
-			"PINCHELADAS" => 6
+			"BEBIDAS" => 3,
+			"PINCHETAS" => 1,
+			"ADICIONALES" => 2,
+			"CORTES DE CARNE" => 5,
+			"ENTRADAS" => 4
 		);
-		$this->preReference = 'PINCHETAS_SAYAGO_';
+		$this->preReference = 'PINCHETAS_BOLIVAR_';
 		$this->urlApi = 'https://api.alegra.com/api/v1';
 		$this->conexion = new Conexion();
 	}
@@ -67,7 +66,7 @@ class ApiAlegra extends PDO {
 
 		// Optional Authentication:
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($curl, CURLOPT_USERPWD, "edgarmendezzz@hotmail.com:ca4f1b824544131644ce");
+		curl_setopt($curl, CURLOPT_USERPWD, "pinchetasbolivar@hotmail.com:4c31f9d11aa9b452be95");
 
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -115,7 +114,7 @@ class ApiAlegra extends PDO {
 		$unitCost = $data["cost"];
 		$unit = "unit";
 		$type = "simple";
-		$idWarehouse = 2;
+		$idWarehouse = $this->makeWarehouseInvoice(null);
 		$initialQuantity = $data["quantity"] ? $data["quantity"] : 100;
 		$minQuantity = 10;
 		$maxQuantity = 1000;
@@ -257,7 +256,7 @@ class ApiAlegra extends PDO {
 	}
 
 	public function makeWarehouseInvoice($idPedido) {
-		return 2;  // warehouse de sayago
+		return 1;  // warehouse de sayago
 	}
 
 	public function makeStampInvoice($data) {

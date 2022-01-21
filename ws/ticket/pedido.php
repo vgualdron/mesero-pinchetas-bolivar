@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         escribe el nombre de la tuya. Recuerda que debes compartirla
         desde el panel de control
     */
-    foreach ($productos as $clave => $producto) {
+    /* foreach ($productos as $clave => $producto) {
         $idTipoProducto = $producto["idtipoproducto"];
         if ($idTipoProducto == 3) {
             $flagBebidas = true;
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($flagKiosko) {
         printCommand($mesa, $productos, "KIOSCO-PRINTER");
-    }
+    } */
     printCommand($mesa, $productos, "POS-80");
 }
 

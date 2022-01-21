@@ -18,13 +18,13 @@ try {
   if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $identificationNumber = $_GET['identification'];
     $response = $apiAlegra->getClient($identificationNumber);
-    if(empty($response)) {
-		$clientInvoice = (object) $response;
-	} else {
-		$clientInvoice = $response[0];
-		if ($clientInvoice["nameObject"]) {
-			$clientInvoice["name"] = $clientInvoice["nameObject"]; 
-		}
+      if(empty($response)) {
+      $clientInvoice = (object) $response;
+    } else {
+      $clientInvoice = $response[0];
+      if ($clientInvoice["nameObject"]) {
+        $clientInvoice["name"] = $clientInvoice["nameObject"]; 
+      }
     }
     header("HTTP/1.1 200 OK");
     echo json_encode( $clientInvoice );

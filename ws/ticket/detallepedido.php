@@ -19,7 +19,7 @@ function printCommand($frm, $type) {
         escribe el nombre de la tuya. Recuerda que debes compartirla
         desde el panel de control
     */
-    $idTipoProducto = $producto["idtipoproducto"];
+    /* $idTipoProducto = $producto["idtipoproducto"];
     if ($idTipoProducto == 3) {
         $flagBebidas = true;
     }
@@ -31,7 +31,7 @@ function printCommand($frm, $type) {
     }
     if ($flagKiosko) {
         printTicket($mesa, $producto, $pedido, $type, "KIOSCO-PRINTER");
-    }
+    } */
     printTicket($mesa, $producto, $pedido, $type, "POS-80");
 }
 
