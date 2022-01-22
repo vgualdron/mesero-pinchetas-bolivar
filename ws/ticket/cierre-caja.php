@@ -103,6 +103,7 @@ $hora = date("H:i:s");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productos = $frm['items'];
+    $productosEliminados = $frm['itemsDeleteds'];
 	$gastos = $frm['gastos'];
     $fecha = $frm['fecha'];
 	$titulo = $frm['titulo'];
@@ -239,6 +240,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$printer->text("- - - - - - - - - - - - - - - - - - - - - - - -\n");
 	$printer->text("    TOTAL  :" . '                  $' . number_format(($totalVentas-$totalGastos), 0, ',', '.') . "\n");
 	$printer->text("------------------------------------------------\n");
+
+    $printer->feed(4);
+    foreach ($productosEliminados as $clave => $producto) {
+        
+        /*Alinear a la izquierda para la cantidad y el nombre*/
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text($producto["cantidad"]. "\n");
+        $printer->text(strtr($producto["producto"], $unwanted_array ). "\n");
+        $printer->text(strtr($producto["mesa"], $unwanted_array ). "\n");
+        $printer->text(strtr($producto["persona"], $unwanted_array ). "\n");
+        $printer->text(strtr($producto["estadopedido"], $unwanted_array ). "\n");
+        $printer->text($producto["fecha"]). "\n");
+		$printer->text("- - - - - - - - - - - - - - - - - - - - - - - -\n");
+        $printer->feed(1);
+	}
 	
     /*
         Cortamos el papel. Si nuestra impresora

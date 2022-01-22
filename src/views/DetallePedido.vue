@@ -911,6 +911,18 @@ export default {
       this.listarMesasDisponibles()
       this.showModalCambiarMesa = true
     },
+    generarTicketCambioMesa: function(frm) {
+      var self = this;
+      let token = window.localStorage.getItem("token");
+      self.$loader.open({ message: "Cambiando de mesa ..." });
+      self.$http.post("ws/ticket/cambio-mesa.php", frm).then(resp => {
+        self.$loader.close();
+      })
+      .catch(resp => {
+        self.$loader.close();
+        self.$toast.error("error generando ticket de cambio de mesa");
+      });
+    },
     cambiarMesa: function() {
       var self = this;
       if (!self.idMesaNueva) {
@@ -926,6 +938,7 @@ export default {
         token: token,
         idestado: self.pedido.idestado,
         idmesa: self.idMesaNueva,
+        idmesaVieja: self.pedido.idmesa,
         nombrecliente: self.pedido.nombrecliente,
         telefonocliente: self.pedido.telefonocliente,
         direccioncliente: self.pedido.direccioncliente,
@@ -941,6 +954,7 @@ export default {
             self.$loader.open({ message: "Cambiando ..." });
             self.$http.put("ws/pedido/", frm).then(resp => {
               var respuesta = resp.data;
+              self.generarTicketCambioMesa(frm);
               self.$toast.success(resp.data.mensaje);
               self.$loader.close();
               self.atras();
