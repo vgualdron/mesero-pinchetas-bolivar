@@ -35,7 +35,7 @@ class ApiAlegra extends PDO {
 	}
 	
 	public function getIdCategory($name) {
-		return $this->getCategoryItem($name)['id'];
+		return $this->getCategoryItem($name)[0]['id'];
 	}
 	
 	public function getPreReference() {
@@ -90,7 +90,7 @@ class ApiAlegra extends PDO {
 	public function getItem($data) {
 		$name = str_replace (' ', '%20', $data['name']);
 		$reference = $data['reference'];
-		$url = $this->getUrlApi().'/items?reference='.$reference.'&name='.$name;
+		$url = $this->getUrlApi().'/items?reference='.$reference;
 		$make_call = $this->callApi('GET', $url);
 		$response = json_decode($make_call, true);
 		return $response;
@@ -106,6 +106,7 @@ class ApiAlegra extends PDO {
 	public function updateItem($data) {
 		$url = $this->getUrlApi()."/items"."/".$data["id"];
 		unset($data['id']);
+		unset($data['type']);
 		$make_call = $this->callApi('PUT', $url, json_encode($data));
 		$response = json_decode($make_call, true);
 		return $response;
@@ -117,7 +118,7 @@ class ApiAlegra extends PDO {
 		$depeQuantity = $data["depeQuantity"];
 		$name = $data["name"];
 		$nameTipoProducto = $data["nameTipoProducto"];
-		$reference = $this->getPreReference().$idPinchetas;
+		$reference = $this->getPreReference().$idPinchetas."A";
 		$price = $data["price"];
 		$unitCost = $data["cost"];
 		$unit = "unit";
@@ -127,7 +128,7 @@ class ApiAlegra extends PDO {
 		$minQuantity = 10;
 		$maxQuantity = 1000;
 		$idCategory = $this->getIdCategory($nameTipoProducto);
-		
+
 		$item = array(
       		"idPinchetas" => $idPinchetas,
 			"id" => $idAlegra,
@@ -137,7 +138,7 @@ class ApiAlegra extends PDO {
 			"quantity" => $depeQuantity,
 			"type" =>  $type,
 			"itemCategory" => array(
-				"id" => 1
+				"id" => $idCategory
 			),
 			"inventory" => array(
 				"unit" => $unit,
@@ -161,6 +162,7 @@ class ApiAlegra extends PDO {
 
 		$sql = $conexion->prepare(" select 
 			prod.prod_id as id, 
+			prod.prod_id as idPinchetas, 
 			prod.prod_descripcion as name, 
 			prod.prod_precio as price, 
 			prod.prod_costo as cost,
@@ -190,16 +192,19 @@ class ApiAlegra extends PDO {
 				$response["quantity"] = $valor["quantity"];
 				$response["depeQuantity"] = $valor["depeQuantity"];
 				$response["cost"] = $valor["cost"];
+				$response["nameTipoProducto"] = $valor["nameTipoProducto"];
 				$itemNew = $this->makeItem($response);
 				$response = $this->insertItem($itemNew);
 				$itemNew["id"] = $response["id"];
 			} else {
 				$response = $response[0];
 				$response["idPinchetas"] = $valor["id"];
+				$response["name"] = $valor["name"];
 				$response["price"] = $valor["price"];
 				$response["quantity"] = $valor["quantity"];
 				$response["depeQuantity"] = $valor["depeQuantity"];
 				$response["cost"] = $valor["cost"];
+				$response["nameTipoProducto"] = $valor["nameTipoProducto"];
 				$itemNew = $this->makeItem($response);
 				$response = $this->updateItem($itemNew);
 			}
