@@ -21,13 +21,21 @@ class ApiAlegra extends PDO {
 		$this->urlApi = 'https://api.alegra.com/api/v1';
 		$this->conexion = new Conexion();
 	}
+
+	public function getCategoryItem($query) {
+		$query = str_replace (' ', '%20', $query);
+		$url = $this->getUrlApi().'/item-categories?query='.$query;
+		$make_call = $this->callApi('GET', $url);
+		$response = json_decode($make_call, true);
+		return $response;
+	}
 	
 	public function getCategories() {
 		return $this->categories;
 	}
 	
 	public function getIdCategory($name) {
-		return $this->getCategories()[$name];
+		return $this->getCategoryItem($name)['id'];
 	}
 	
 	public function getPreReference() {

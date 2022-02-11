@@ -250,8 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $printer->text(strtr($producto["producto"], $unwanted_array ). "\n");
         $printer->text(strtr($producto["mesa"], $unwanted_array ). "\n");
         $printer->text(strtr($producto["persona"], $unwanted_array ). "\n");
-        $printer->text(strtr($producto["estadopedido"], $unwanted_array ). "\n");
-        $printer->text($producto["fecha"]). "\n");
+        $printer->text('ESTADO PEDIDO: '.strtr($producto["estadopedido"], $unwanted_array ). "\n");
+        $printer->text($producto["fecha"]. "\n");
 		$printer->text("- - - - - - - - - - - - - - - - - - - - - - - -\n");
         $printer->feed(1);
 	}

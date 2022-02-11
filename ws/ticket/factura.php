@@ -168,6 +168,7 @@ function printInvoice($frm, $printerName, $tienePropina = false) {
     $printer->text($nombreEmpresa . "\n");
     $printer->setTextSize(1,1);
     $printer->text("NIT: " . $nitEmpresa . "\n");
+    $printer->text("Régimen simple de tributación \n");
     $printer->text($direccionEmpresa . "\n");
     $printer->text("TEL: " . $telefonoEmpresa . "\n");
     $printer->text($resolucionEmpresa . " \n");
@@ -261,11 +262,11 @@ function printInvoice($frm, $printerName, $tienePropina = false) {
     
     $printer->text("    BASE      %          IVA      %       ICO   \n");
     
-    $base = $total - ($total * 0.08);
-    // $base = $total;
+    // $base = $total - ($total * 0.08);
+    $base = $total;
     $iva = 0;
-    $ico = ($total * 0.08);
-    // $ico = ($total * 0);
+    // $ico = ($total * 0.08);
+    $ico = ($total * 0);
     $printer->text(number_format($base, 2, ',', '.') ."    0 " . "         0.00    " . "  8   " . number_format($ico, 2, ',', '.') . "\n");
     $printer->text("-------------  ----------------  ---------------\n");
     $printer->setEmphasis(true);
