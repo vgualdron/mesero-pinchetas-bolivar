@@ -10,13 +10,6 @@ class ApiAlegra extends PDO {
 	public $conexion;
 	
 	public function __construct() {
-		$this->categories  =  array(
-			"BEBIDAS" => 3,
-			"PINCHETAS" => 1,
-			"ADICIONALES" => 2,
-			"CORTES DE CARNE" => 5,
-			"ENTRADAS" => 4
-		);
 		$this->preReference = 'PINCHETAS_BOLIVAR_';
 		$this->urlApi = 'https://api.alegra.com/api/v1';
 		$this->conexion = new Conexion();
@@ -27,11 +20,20 @@ class ApiAlegra extends PDO {
 		$url = $this->getUrlApi().'/item-categories?query='.$query;
 		$make_call = $this->callApi('GET', $url);
 		$response = json_decode($make_call, true);
+		if(empty($response)) {
+			$obj = array(
+				"name" => str_replace('%20', ' ', $query)
+			);
+			$response = array($this->insertCategoryItem($obj));
+		}
 		return $response;
 	}
-	
-	public function getCategories() {
-		return $this->categories;
+
+	public function insertCategoryItem($data) {
+		$url = $this->getUrlApi().'/item-categories';
+		$make_call = $this->callApi('POST', $url, json_encode($data));
+		$response = json_decode($make_call, true);
+		return $response;
 	}
 	
 	public function getIdCategory($name) {
@@ -293,7 +295,6 @@ class ApiAlegra extends PDO {
 
 	public function stampInvoice($data) {
 		$url = $this->getUrlApi()."/invoices";
-		// unset($data['id']);
 		$make_call = $this->callApi('POST', $url, json_encode($data));
 		$response = json_decode($make_call, true);
 		return $response;
